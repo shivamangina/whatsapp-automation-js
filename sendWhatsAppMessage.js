@@ -8,7 +8,7 @@ const PHONE_NUMBER_ID = process.env.PHONE_NUMBER_ID || "873809279155319";
  * @param {Object} data - The message payload to send
  * @returns {Promise<Object>} - Response object with status and data
  */
-export default async function sendMessage({ to, body }) {
+async function sendMessage({ to, body }) {
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${ACCESS_TOKEN}`,
