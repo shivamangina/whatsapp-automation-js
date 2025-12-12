@@ -1,0 +1,22 @@
+{
+  "name": "whatsapp-automation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shivamangina/whatsapp-automation-js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shivamangina/whatsapp-automation-js/issues"
+  },
+  "homepage": "https://github.com/shivamangina/whatsapp-automation-js#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
