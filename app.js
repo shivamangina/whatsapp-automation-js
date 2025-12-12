@@ -1,6 +1,6 @@
 // Import Express.js
 const express = require("express");
-const sendMessage = require("./sendWhatsAppMessage");
+const { sendMessage } = require("./sendWhatsAppMessage");
 
 // Create an Express app
 const app = express();
@@ -32,16 +32,25 @@ app.get("/", (req, res) => {
 app.post("/", async (req, res) => {
   const timestamp = new Date().toISOString().replace("T", " ").slice(0, 19);
   console.log(`\n\nWebhook received ${timestamp}\n`);
-
-  const { object, entry } = req.body;
-
-  const { from, body } = entry[0].changes[0].messages;
-  const response = await sendMessage({
-    to: from,
-    body: body,
-  });
-
   console.log(JSON.stringify(req.body, null, 2));
+
+  // Extract message from webhook payload
+  const message = req.body.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
+
+  // Only process if it's an incoming text message
+  if (message && message.type === "text") {
+    const from = message.from; // Sender's phone number (e.g., "918940611596")
+    const body = message.text.body; // Message text (e.g., "Hello")
+
+    console.log(`\nMessage from ${from}: ${body}`);
+
+    // Send a reply
+    await sendMessage({
+      to: from,
+      body: `You said: "${body}"`,
+    });
+  }
+
   res.status(200).end();
 });
 
