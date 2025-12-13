@@ -1,4 +1,5 @@
 const OpenAI = require("openai");
+const { getChatLink } = require("./utils");
 
 secondMessage = async () => {
   return `Next..  you got to ‘mysa commit’ haha.. Only go ahead if you are sure - this is just to prioritise my time/calls for people who is ACTUALLY serious about this and is ready to invest time into this (no ghosting and stuff that happens on other apps iykyk haha)
@@ -68,6 +69,19 @@ Once done, I’ll share your pre interview form + slot between 7–9 PM weekdays
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
+
+// add tools support for the ai response.
+// tool to get the user data by phone number
+// tool to generate the chatlink by phone number
+const tools = [
+  {
+    type: "function",
+    function: {
+      name: "getChatLink",
+      description: "Get the chat link for the user",
+    },
+  },
+];
 
 /**
  * Generate an AI response based on the user's question
