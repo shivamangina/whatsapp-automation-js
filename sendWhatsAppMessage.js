@@ -1,7 +1,19 @@
 // WhatsApp Cloud API configuration
-const ACCESS_TOKEN = process.env.ACCESS_TOKEN; 
+const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
 const VERSION = process.env.VERSION || "v22.0";
 const PHONE_NUMBER_ID = process.env.PHONE_NUMBER_ID || "873809279155319";
+
+const { db } = require("./mongo");
+
+async function saveMessageToDatabase(sender, receiver, message, type) {
+  await db.collection("messages").insertOne({
+    sender: "Ankitha",
+    receiver: receiver,
+    message: message,
+    timestamp: new Date(),
+    type: type,
+  });
+}
 
 /**
  * Send a message via WhatsApp Cloud API
@@ -23,8 +35,9 @@ async function sendMessage({ to, body }) {
     text: { body: body },
   };
 
-  try {
+  await saveMessageToDatabase("Ankitha", to, body, "outgoing");
 
+  try {
     // save the data to the database
 
     const response = await fetch(url, {

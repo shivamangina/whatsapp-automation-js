@@ -12,7 +12,7 @@ app.use(express.json());
 
 // Set port and verify_token
 const port = process.env.PORT || 3000;
-const verifyToken = process.env.VERIFY_TOKEN
+const verifyToken = process.env.VERIFY_TOKEN;
 
 // Route for GET requests
 app.get("/", (req, res) => {
@@ -43,6 +43,8 @@ app.post("/", async (req, res) => {
   if (message && message.type === "text") {
     const from = message.from; // Sender's phone number (e.g., "918940611596")
     const body = message.text.body; // Message text (e.g., "Hello")
+
+    await saveMessageToDatabase(from, "Ankitha", body, "incoming");
 
     console.log(`\nMessage from ${from}: ${body}`);
 
