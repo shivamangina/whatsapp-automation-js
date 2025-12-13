@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const { sendMessage } = require("./sendWhatsAppMessage");
 const { generateAIResponse } = require("./generateAiReponse");
+const { db } = require("./mongo");
 
 // Create an Express app
 const app = express();
@@ -48,8 +49,32 @@ app.post("/", async (req, res) => {
 
     console.log(`\nMessage from ${from}: ${body}`);
 
+    // Get the conversation history from the database
+    const conversationHistory = await db
+      .collection("messages")
+      .find({
+        $or: [{ sender: from }, { receiver: from }],
+      })
+      .sort({ timestamp: -1 })
+      .limit(10)
+      .toArray();
+
+    conversationHistory
+      .map((message) =>
+        message.type === "incoming"
+          ? {
+              role: "user",
+              content: message.message,
+            }
+          : {
+              role: "system",
+              content: message.message,
+            }
+      )
+      .reverse();
+
     // Generate AI response based on the user's question
-    const aiResponse = await generateAIResponse(body);
+    const aiResponse = await generateAIResponse(body, conversationHistory);
     console.log(`\nAI Response: ${aiResponse}`);
 
     // Send the AI-generated reply

@@ -12,6 +12,7 @@ const openai = new OpenAI({
  * @returns {Promise<string>} - The AI generated response
  */
 async function generateAIResponse(question, conversationHistory = []) {
+  console.log('conversationHistory: ', conversationHistory);
   try {
     // Build messages array with conversation history
     const messages = [
