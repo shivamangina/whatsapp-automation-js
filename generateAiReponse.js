@@ -89,9 +89,13 @@ const tools = [
  * @param {Array} conversationHistory - Optional array of previous messages for context
  * @returns {Promise<string>} - The AI generated response
  */
-async function generateAIResponse(question, conversationHistory = [], phoneNumber) {
+async function generateAIResponse(
+  question,
+  conversationHistory = [],
+  phoneNumber
+) {
   const chatLink = await getChatLink(phoneNumber);
-  console.log("conversationHistory: ", conversationHistory);
+
   try {
     // Build messages array with conversation history
     const messages = [
