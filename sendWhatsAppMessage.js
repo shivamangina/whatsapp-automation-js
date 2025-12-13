@@ -68,4 +68,4 @@ async function sendMessage({ to, body }) {
   }
 }
 
-module.exports = { sendMessage };
+module.exports = { sendMessage, saveMessageToDatabase };

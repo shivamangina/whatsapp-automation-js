@@ -4,6 +4,7 @@ const express = require("express");
 const { sendMessage } = require("./sendWhatsAppMessage");
 const { generateAIResponse } = require("./generateAiReponse");
 const { db } = require("./mongo");
+const { saveMessageToDatabase } = require("./saveMessageToDatabase");
 
 // Create an Express app
 const app = express();
