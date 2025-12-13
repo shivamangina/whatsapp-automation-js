@@ -24,6 +24,9 @@ async function sendMessage({ to, body }) {
   };
 
   try {
+
+    // save the data to the database
+
     const response = await fetch(url, {
       method: "POST",
       headers: headers,

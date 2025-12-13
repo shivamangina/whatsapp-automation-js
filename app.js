@@ -44,6 +44,9 @@ app.post("/", async (req, res) => {
 
     console.log(`\nMessage from ${from}: ${body}`);
 
+    // generate the response from from the ai model
+    // get the previous message from the database
+
     // Send a reply
     await sendMessage({
       to: from,
