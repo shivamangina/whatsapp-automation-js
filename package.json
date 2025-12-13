@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/shivamangina/whatsapp-automation-js#readme",
   "dependencies": {
-    "express": "^5.2.1"
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "openai": "^6.10.0"
   }
 }

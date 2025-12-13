@@ -1,6 +1,8 @@
 // Import Express.js
+require("dotenv").config();
 const express = require("express");
 const { sendMessage } = require("./sendWhatsAppMessage");
+const { generateAIResponse } = require("./generateAiReponse");
 
 // Create an Express app
 const app = express();
@@ -10,7 +12,7 @@ app.use(express.json());
 
 // Set port and verify_token
 const port = process.env.PORT || 3000;
-const verifyToken = process.env.VERIFY_TOKEN;
+const verifyToken = process.env.VERIFY_TOKEN
 
 // Route for GET requests
 app.get("/", (req, res) => {
@@ -44,13 +46,36 @@ app.post("/", async (req, res) => {
 
     console.log(`\nMessage from ${from}: ${body}`);
 
-    // generate the response from from the ai model
-    // get the previous message from the database
+    // Generate AI response based on the user's question
+    const aiResponse = await generateAIResponse(body);
+    console.log(`\nAI Response: ${aiResponse}`);
 
-    // Send a reply
+    // Send the AI-generated reply
     await sendMessage({
       to: from,
-      body: `You said: "${body}"`,
+      body: aiResponse,
+    });
+  }
+
+  res.status(200).end();
+});
+
+initialMessage = (name) => `Hey ${name}! I’m Ankitha, your matchmaker! 
+
+I’m so excited to tell you that I thought you are awesome and wanted to welcome you into the next 25 Mysa’s beta users batch 🤍
+I might have already someone in mind for you but we will know better after I understand you in depth haha 😋
+
+Just wanted to check.. are you still open to exploring this?
+
+Let me know, so I can send the mysa commitment fee link and the next steps ✨`;
+
+app.post("/initial-message", async (req, res) => {
+  const contacts = req.body;
+
+  for (const contact of contacts) {
+    await sendMessage({
+      to: contact.to,
+      body: initialMessage(contact.name),
     });
   }
 

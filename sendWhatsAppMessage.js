@@ -1,5 +1,5 @@
 // WhatsApp Cloud API configuration
-const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
+const ACCESS_TOKEN = process.env.ACCESS_TOKEN; 
 const VERSION = process.env.VERSION || "v22.0";
 const PHONE_NUMBER_ID = process.env.PHONE_NUMBER_ID || "873809279155319";
 
