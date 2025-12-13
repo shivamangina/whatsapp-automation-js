@@ -100,6 +100,17 @@ Let me know, so I can send the mysa commitment fee link and the next steps ✨`;
 app.post("/initial-message", async (req, res) => {
   const contacts = req.body;
 
+  // check if the user is already in the database
+  // create a new user in the database if not exists
+  await db.collection("user").insertOne({
+    number: contacts.from,
+    name: contacts.name,
+    firstMessageSent: true,
+    calendlyScheduled: false,
+    paymentStatus: "pending",
+    profile: null,
+  });
+
   for (const contact of contacts) {
     await sendMessage({
       to: contact.to,
@@ -108,6 +119,28 @@ app.post("/initial-message", async (req, res) => {
   }
 
   res.status(200).end();
+});
+
+app.post("/payment-webhook", async (req, res) => {
+  // mark the payment as successful in the database
+  await db.collection("user").updateOne(
+    {
+      number: req.body.number,
+    },
+    {
+      $set: {
+        paymentStatus: "successful",
+        transactionId: req.body.transactionId,
+      },
+    }
+  );
+  const contacts = req.body;
+  for (const contact of contacts) {
+    await sendMessage({
+      to: contact.to,
+      body: "Payment successful. Please wait for your pre interview form and slot.",
+    });
+  }
 });
 
 // Start the server
